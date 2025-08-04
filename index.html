@@ -77,6 +77,12 @@
             background-color: #14b2e2;
         }
 
+        .day-circle img, .option-circle img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+        }
+
         .status-label {
             display: none;
         }
@@ -195,7 +201,9 @@
             <div class="day-label">Mon</div>
             <div class="options-container-top">
             </div>
-            <div class="day-circle office" data-status="office">OFFICE</div>
+            <div class="day-circle office" data-status="office">
+                <img src="officeicon.png" alt="Office">
+            </div>
             <div class="options-container">
             </div>
         </div>
@@ -204,7 +212,9 @@
             <div class="day-label">Tue</div>
             <div class="options-container-top">
             </div>
-            <div class="day-circle office" data-status="office">OFFICE</div>
+            <div class="day-circle office" data-status="office">
+                <img src="officeicon.png" alt="Office">
+            </div>
             <div class="options-container">
             </div>
         </div>
@@ -213,7 +223,9 @@
             <div class="day-label">Wed</div>
             <div class="options-container-top">
             </div>
-            <div class="day-circle office" data-status="office">OFFICE</div>
+            <div class="day-circle office" data-status="office">
+                <img src="officeicon.png" alt="Office">
+            </div>
             <div class="options-container">
             </div>
         </div>
@@ -222,7 +234,9 @@
             <div class="day-label">Thu</div>
             <div class="options-container-top">
             </div>
-            <div class="day-circle office" data-status="office">OFFICE</div>
+            <div class="day-circle office" data-status="office">
+                <img src="officeicon.png" alt="Office">
+            </div>
             <div class="options-container">
             </div>
         </div>
@@ -231,7 +245,9 @@
             <div class="day-label">Fri</div>
             <div class="options-container-top">
             </div>
-            <div class="day-circle wfh" data-status="wfh">WFH</div>
+            <div class="day-circle wfh" data-status="wfh">
+                <img src="homeicon.png" alt="Work from Home">
+            </div>
             <div class="options-container">
             </div>
         </div>
@@ -240,7 +256,9 @@
             <div class="day-label">Sat</div>
             <div class="options-container-top">
             </div>
-            <div class="day-circle away" data-status="away">AWAY</div>
+            <div class="day-circle away" data-status="away">
+                <img src="awayicon.png" alt="Away">
+            </div>
             <div class="options-container">
             </div>
         </div>
@@ -249,7 +267,9 @@
             <div class="day-label">Sun</div>
             <div class="options-container-top">
             </div>
-            <div class="day-circle away" data-status="away">AWAY</div>
+            <div class="day-circle away" data-status="away">
+                <img src="awayicon.png" alt="Away">
+            </div>
             <div class="options-container">
             </div>
         </div>
@@ -258,13 +278,22 @@
     <script>
         let activeColumn = null;
 
-        function getStatusText(status) {
+        function getStatusIcon(status) {
             const statusMap = {
-                'away': 'AWAY',
-                'office': 'OFFICE', 
-                'wfh': 'WFH'
+                'away': 'awayicon.png',
+                'office': 'officeicon.png', 
+                'wfh': 'homeicon.png'
             };
             return statusMap[status];
+        }
+
+        function getStatusAlt(status) {
+            const altMap = {
+                'away': 'Away',
+                'office': 'Office',
+                'wfh': 'Work from Home'
+            };
+            return altMap[status];
         }
 
         function getOtherStatuses(currentStatus) {
@@ -276,7 +305,12 @@
             const circle = document.createElement('div');
             circle.className = `option-circle ${status}`;
             circle.dataset.option = status;
-            circle.textContent = getStatusText(status);
+            
+            const img = document.createElement('img');
+            img.src = getStatusIcon(status);
+            img.alt = getStatusAlt(status);
+            circle.appendChild(img);
+            
             return circle;
         }
 
@@ -304,7 +338,11 @@
                     // Update main circle
                     mainCircle.className = `day-circle ${selectedStatus}`;
                     mainCircle.dataset.status = selectedStatus;
-                    mainCircle.textContent = getStatusText(selectedStatus);
+                    
+                    // Update the icon
+                    const img = mainCircle.querySelector('img');
+                    img.src = getStatusIcon(selectedStatus);
+                    img.alt = getStatusAlt(selectedStatus);
                     
                     // Close options with animation
                     setTimeout(() => {
@@ -327,7 +365,11 @@
                     // Update main circle
                     mainCircle.className = `day-circle ${selectedStatus}`;
                     mainCircle.dataset.status = selectedStatus;
-                    mainCircle.textContent = getStatusText(selectedStatus);
+                    
+                    // Update the icon
+                    const img = mainCircle.querySelector('img');
+                    img.src = getStatusIcon(selectedStatus);
+                    img.alt = getStatusAlt(selectedStatus);
                     
                     // Close options with animation
                     setTimeout(() => {
