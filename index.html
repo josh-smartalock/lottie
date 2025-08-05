@@ -22,6 +22,9 @@
             gap: 25px;
             align-items: flex-start;
             position: relative;
+            padding:20px 20px 45px 20px;
+            border-radius: 20px;
+            background-color:white;
         }
 
         .day-column {
@@ -29,6 +32,12 @@
             flex-direction: column;
             align-items: center;
             position: relative;
+            transition: opacity 0.3s ease;
+            
+        }
+
+        .day-column.dimmed {
+            opacity: 0.4;
         }
 
         .day-label {
@@ -38,6 +47,8 @@
             margin-bottom: 8px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            
+            padding-bottom:5px;
         }
 
         .day-circle {
@@ -65,16 +76,8 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
-        .day-circle.active.away {
-            border-color: #a8a8a8;
-        }
-
-        .day-circle.active.office {
-            border-color: #008d66;
-        }
-
-        .day-circle.active.wfh {
-            border-color: #0f8cb8;
+        .day-circle.active {
+            border-color: #ffffff;
         }
 
         .day-circle.away {
@@ -101,7 +104,7 @@
 
         .options-container {
             position: absolute;
-            top: 72px;
+            top: 77px;
             display: flex;
             flex-direction: column;
             gap: 5px;
@@ -115,7 +118,7 @@
 
         .options-container-top {
             position: absolute;
-            bottom: 49px;
+            bottom: 47px;
             display: flex;
             flex-direction: column;
             gap: 5px;
@@ -146,7 +149,6 @@
             border: 3px solid white;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
             transform: scale(0.9);
             display: flex;
             align-items: center;
@@ -391,6 +393,20 @@
             }
         }
 
+        function dimOtherColumns(activeColumn) {
+            document.querySelectorAll('.day-column').forEach(column => {
+                if (column !== activeColumn) {
+                    column.classList.add('dimmed');
+                }
+            });
+        }
+
+        function undimAllColumns() {
+            document.querySelectorAll('.day-column').forEach(column => {
+                column.classList.remove('dimmed');
+            });
+        }
+
         function closeAllOptions() {
             document.querySelectorAll('.options-container, .options-container-top').forEach(container => {
                 container.classList.remove('active');
@@ -399,6 +415,7 @@
                 circle.classList.remove('active');
             });
             document.getElementById('overlay').classList.remove('active');
+            undimAllColumns();
             activeColumn = null;
         }
 
@@ -423,6 +440,7 @@
                     column.querySelector('.options-container-top').classList.add('active');
                     circle.classList.add('active');
                     document.getElementById('overlay').classList.add('active');
+                    dimOtherColumns(column);
                     activeColumn = column;
                 }
             });
